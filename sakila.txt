@@ -81,7 +81,7 @@ SELECT `title` FROM film WHERE film_id IN (
 	);
 
 -- 22 how many distinct countries are there?
-SELECT DISTINCT * FROM country;
+SELECT COUNT(DISTINCT country) FROM country;
 
 -- 23 list every language in reverse alpha order
 SELECT * FROM LANGUAGE ORDER BY `name` DESC;
