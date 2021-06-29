@@ -1,0 +1,103 @@
+USE sakila;
+-- 1 list all actors
+SELECT * FROM actor;
+
+-- 2 surname of actor with forename John. 
+SELECT last_name FROM actor WHERE first_name = 'John';
+
+-- 3 all actors with surname Neeson
+SELECT * FROM actor WHERE last_name = 'Neeson';
+
+-- 4 all actors with ID nos divisible by 10
+SELECT * FROM actor WHERE actor_id % 10 = 0;
+
+-- 5 descr of the movie with ID 100
+SELECT description FROM film WHERE film_id = 100;
+
+-- 6 every R-rated movie
+SELECT * FROM film WHERE rating = 'R';
+
+-- 7 ever non-r rated movie
+SELECT * FROM film WHERE rating != 'R';
+
+-- 8 ten shortest movies
+SELECT * FROM film ORDER BY length LIMIT 10;
+
+-- 9 all films with longest runtime, not using LIMIT
+SELECT * FROM film WHERE length = (SELECT Max(length) FROM film);
+
+-- 10 all movies with deleted scenes
+SELECT * FROM film WHERE special_features LIKE '%Deleted Scenes%';
+
+-- 11 using HAVING, reverse alpha list of last names not repeated
+SELECT COUNT(*) AS freq, last_name FROM actor GROUP BY last_name HAVING freq = 1 ORDER BY last_name DESC;
+
+-- 12 using HAVING, list last names appearing more than once, from higest to lowest freq
+SELECT COUNT(*) AS 'freq', last_name FROM actor GROUP BY last_name HAVING freq > 1 ORDER BY freq DESC;
+
+-- 13 actor appearing in most films
+SELECT * FROM actor WHERE actor_id = (SELECT actor_id FROM film_actor GROUP BY actor_id ORDER BY COUNT(*) DESC LIMIT 1);
+
+-- 14 when is Academy Dinosaur due?
+SELECT title, rental_date, rental_duration, DATE_ADD(rental_date, INTERVAL rental_duration DAY) AS due_date
+FROM rental `r`
+JOIN inventory `i` ON r.inventory_id = i.inventory_id
+JOIN film `f` ON i.film_id = f.film_id
+WHERE title = 'Academy Dinosaur' AND return_date IS NULL;
+
+-- 15 average runtime of all films
+SELECT AVG(length) FROM film;
+
+-- 16 average runtime for every film category
+SELECT name, AVG(length)
+FROM film
+ JOIN
+	film_category ON film.film_id = film_category.film_id
+ JOIN
+	category ON film_category.category_id = category.category_id
+GROUP BY name;
+
+-- 17 all movies featuring a robot
+SELECT * FROM film WHERE description LIKE '%robot%';
+
+-- 18 how many movies released in 2010?
+SELECT release_year, COUNT(*) FROM film GROUP BY release_year HAVING release_year=2010;
+
+-- 19 titles of all horror movies
+SELECT title FROM film WHERE film_id IN (
+	SELECT film_id FROM film_category WHERE `category_id` = (
+		SELECT category_id from category WHERE `name` = 'horror'
+		)
+	);
+
+-- 20 full name of staff member with ID of 2
+SELECT CONCAT(first_name, ' ', last_name) AS `Full name` FROM staff WHERE staff_id = 2;
+
+-- 21 list movies with Fred Costner
+SELECT `title` FROM film WHERE film_id IN (
+	SELECT film_id FROM film_actor WHERE actor_id = (
+		SELECT actor_id FROM actor WHERE first_name = 'Fred' AND last_name = 'Costner'
+		)
+	);
+
+-- 22 how many distinct countries are there?
+SELECT DISTINCT * FROM country;
+
+-- 23 list every language in reverse alpha order
+SELECT * FROM LANGUAGE ORDER BY `name` DESC;
+
+-- 24 full names of every actor with surname ending '-son', alphabetical order by forename
+SELECT CONCAT(first_name, ' ', last_name) AS `Full name` FROM actor WHERE last_name LIKE '%son' ORDER BY first_name;
+
+-- 25 which category has most films?
+-- using join
+	SELECT `name`, COUNT(*) as `total`
+	FROM film_category `fc`
+	JOIN category `c` ON fc.category_id = c.category_id
+	GROUP BY c.category_id
+	ORDER BY total DESC LIMIT 1;
+
+-- using nested
+	SELECT `name` FROM category WHERE category_id =(
+		SELECT category_ID FROM film_category GROUP BY category_id ORDER BY count(*) DESC LIMIT 1
+		);
