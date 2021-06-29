@@ -1,0 +1,65 @@
+-- Using COUNT, get no of cities in USA
+SELECT COUNT(*) FROM city WHERE CountryCode = (SELECT Code from country WHERE Name = 'United States');
+
+-- pop and life expectancy for people in Argentina (arg)
+SELECT Population, LifeExpectancy FROM country WHERE Code = 'ARG';
+
+-- IS NOT NULL, ORDER BY, LIMIT - country with highest life exp
+SELECT name, LifeExpectancy FROM country WHERE LifeExpectancy IS NOT NULL ORDER BY LifeExpectancy DESC LIMIT 1; 
+
+-- JOIN ... ON, what is capital of Spain?
+SELECT country.name, city.name FROM	country
+    JOIN city ON country.Capital = city.ID
+	WHERE country.name = 'Spain';
+
+-- JOIN, ... ON, list langs spoken in 'Southeast Asia'
+SELECT DISTINCT `Language` FROM countrylanguage `l`
+	JOIN country `c` ON l.CountryCode = c.Code
+    WHERE Region = 'Southeast Asia'
+    ORDER BY `Language`;
+
+-- 25 cities starting with letter F
+SELECT `Name` from city WHERE `Name` LIKE 'F%' LIMIT 25;
+
+-- using COUNT, get no of cities in China
+SELECT COUNT(*) fROM city WHERE CountryCode = (SELECT Code FROM country WHERE Name = 'China');
+
+-- Using IS NOT NULL, ORDER BY, LIMIT, country w/ lowest pop
+SELECT `Name`, Population from country WHERE Population IS NOT NULL ORDER BY Population LIMIT 1;
+SELECT `Name`, Population from country WHERE Population IS NOT NULL AND Population > 0 ORDER BY Population LIMIT 1; -- to exclude unpopulated countries
+
+-- using aggregation, return no of countries in DB
+SELECT COUNT(*) FROM country;
+
+-- What are the top ten largest countries by pop?
+SELECT `Name`, Population FROM country WHERE Population ORDER BY Population DESC LIMIT 10; 
+
+-- top five largest cities in Japan
+SELECT `Name`, Population FROM city WHERE CountryCode = (SELECT Code FROM country WHERE Name = 'Japan') ORDER BY Population DESC LIMIT 5;
+
+-- Names and country codes of every country w/ Elizabeth II as HoS.
+SELECT `Name`, `Code` FROM country WHERE HeadOfState = 'Elisabeth II'; -- name is spelled wrong in table!
+
+-- top ten countries w/ smallest pop:area ratio
+SELECT `Name`, Population/SurfaceArea AS Ratio FROM country ORDER BY Ratio LIMIT 10;
+
+-- every unique world language
+SELECT DISTINCT `Language` FROM countryLanguage ORDER BY `Language`;
+
+-- Top 10 richest countries
+SELECT `Name` FROM country ORDER BY GNP DESC LIMIT 10;
+    
+-- Top 10 largest countries by area
+SELECT `Name` FROM country ORDER BY SurfaceArea DESC LIMIT 10;
+
+-- Every country with >50% french speakers
+SELECT `Name` FROM country WHERE Code IN (SELECT CountryCode FROM countryLanguage WHERE Language = 'French' AND Percentage > 50);
+
+-- Country w/ lowest life expectancy
+SELECT `Name`, LifeExpectancy FROM country WHERE LifeExpectancy IS NOT NULL ORDER BY LifeExpectancy LIMIT 1;
+
+-- most common form of government
+SELECT GovernmentForm, Count(*) as Total FROM country GROUP BY GovernmentForm ORDER BY Total DESC LIMIT 1;
+
+-- how many countries got independence since records began
+SELECT COUNT(*) FROM country WHERE IndepYear IS NOT NULL;
