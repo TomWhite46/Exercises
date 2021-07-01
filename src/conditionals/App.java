@@ -5,7 +5,7 @@ public class App {
 	public static void main(String[] args) {
 		ConditionalsAlt.fizzBuzz(14);
 
-		System.out.println(Blackjack.play(22, 24));
+		System.out.println(Blackjack.play(17, 17));
 
 		System.out.println(Unique.uniqueSum(2, 3, 2));
 
