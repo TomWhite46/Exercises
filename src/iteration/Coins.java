@@ -21,19 +21,6 @@ public class Coins {
 			remaining = getRemainder(remaining, denomType);
 		}
 
-//		remaining = getRemainder(remaining, 5000);
-//		remaining = getRemainder(remaining, 2000);
-//		remaining = getRemainder(remaining, 1000);
-//		remaining = getRemainder(remaining, 500);
-//		remaining = getRemainder(remaining, 200);
-//		remaining = getRemainder(remaining, 100);
-//		remaining = getRemainder(remaining, 50);
-//		remaining = getRemainder(remaining, 20);
-//		remaining = getRemainder(remaining, 10);
-//		remaining = getRemainder(remaining, 5);
-//		remaining = getRemainder(remaining, 2);
-//		remaining = getRemainder(remaining, 1);
-
 	}
 
 	public static int getRemainder(int remaining, int denom) {
