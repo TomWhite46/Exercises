@@ -17,4 +17,13 @@ public class Blackjack {
 		}
 	}
 
+	public static int playVar(int i, int j) {
+		if (i <= 21 && (i >= j || j > 21)) {
+			return i;
+		} else if (j <= 21) {
+			return j;
+		} else {
+			return 0;
+		}
+	}
 }

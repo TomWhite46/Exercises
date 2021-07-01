@@ -3,6 +3,9 @@ package conditionals;
 public class App {
 
 	public static void main(String[] args) {
+
+		System.out.println(Blackjack.playVar(22, 22));
+
 		ConditionalsAlt.fizzBuzz(14);
 
 		System.out.println(Blackjack.play(17, 17));
@@ -16,7 +19,7 @@ public class App {
 
 		System.out.println();
 
-		Flowchart.flow(200);
+//		Flowchart.flow(200);
 
 	}
 
